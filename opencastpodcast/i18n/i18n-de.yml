@@ -1,0 +1,96 @@
+---
+
+# LDAP based authentication handler for Leihs
+# Copyright 2022 ELAN e.V.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+user_management: Nutzermanagement
+login: Login
+username: Nutzername
+password: Passwort
+back: Zurück
+date_format:
+  short: '%d.%m.%Y'
+  long: '%d.%m.%Y %H:%M'
+service_account:
+  header: Funktionskennung anlegen
+  login: Login
+  management_login: Verwaltet durch
+  password: Passwort
+  password_confirm: Passwort (bestätigen)
+  create: Account anlegen
+  created: Funktionskennung erstellt
+user_account:
+  header: Nutzerkennung anlegen
+  existing_account:
+    header: Vorheriger Account
+    description: >
+      Wenn in der Vergangenheit bereits ein Account existierte,
+      zum Beispiel aufgrund eines alten Arbeitsverhältnisses,
+      kann dieser möglicherweise wiederhergestellt werden.
+      Im Zweifel bitte leer lassen.
+    login: Alter Login
+  account_data:
+    header: Account-Daten
+    login: Login
+    organizational_unit: Organisationseinheit
+    password: Passwort
+    password_confirm: Passwort (bestätigen)
+    account_type:
+      title: Accounttyp
+      staff: Bedienstete:r
+      guest: Gast
+  person:
+    header: Persönlöiche Informationen
+    gender:
+      title: Geschlecht
+      male: männlich
+      female: weiblich
+      diverse: divers
+      not_specified: Keine Angaben
+    name:
+      given: Vorname
+      family: Nachname
+      title: Titel
+    birthday: Geburtstag
+  address:
+    work: Geschäftliche Kontaktdaten
+    private: Proivate Kontaktdaten
+    street: Straße
+    street_no: Nummer
+    post_code: Postleitzahl
+    city: Stadt
+    phone: Telefon
+    email: E-Mail
+  agb:
+    header: Nutzungsbedingungen
+    admin: |
+      Mit dem Abschicken dieses Formulars bestätige ich, dass der Nutzer
+      für den dieser Account angelegt werden soll über die Nutzungsbedingungen
+      für die digitalen Dienste der Universität Osnabrück informiert wurde
+      und dass dieser ihnen zustimmt.
+    user: |
+      Mit dem Abschicken dieses Formulars bestätige ich, dass ich mir mit den
+      Nutzungsbedingungen für die digitalen Dienste der Universität Osnabrück
+      vertraut bin und diesen zustimme.
+  created: Nutzerkennung erstellt
+user_invite:
+  header: Nutzereilandung erstellen
+invitation:
+  header: Einladung
+  description: |
+    Eine Nutzereinladung wurde erstellt.
+    Bitte kopieren Sie den folgenden Link
+    und lassen Sie den Nutzer das Formular vervollständigen.

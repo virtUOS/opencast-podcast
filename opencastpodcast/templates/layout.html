@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Opencast Podcasts</title>
+		<meta name=viewport content="width=device-width, initial-scale=1">
+		<link type=text/css rel=stylesheet href={{ url_for('static', filename='style.css') }} />
+
+		<!-- TODO: Use local version -->
+		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100" rel="stylesheet" />
+	</head>
+	<body>
+		<header>
+			<b>OPENCAST</b> PODCAST
+		</header>
+		{% block body %}{% endblock %}
+	</body>
+</html>
