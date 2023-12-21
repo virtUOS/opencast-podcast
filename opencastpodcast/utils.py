@@ -1,4 +1,4 @@
-# LDAP user registration form
+# Opencast Podcast Studio
 # Copyright 2023 Osnabrück University
 #
 # This program is free software: you can redistribute it and/or modify
