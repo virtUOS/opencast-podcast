@@ -44,4 +44,4 @@ if __name__ == '__main__':
     # load it only after we updated the configuration location
     from opencastpodcast.web import app
 
-    app.run(debug=args.debug)
+    app.run(debug=args.debug, extra_files=['opencast-podcast.yml'])
