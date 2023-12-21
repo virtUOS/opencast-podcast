@@ -1,4 +1,4 @@
-# LDAP user registration form
+# Opencast Podcast Studio
 # Copyright 2023 Osnabrück University
 #
 # This program is free software: you can redistribute it and/or modify
@@ -28,19 +28,19 @@ def configuration_file():
     '''Find the best match for the configuration file.  The configuration file
     locations taken into consideration are (in this particular order):
 
-    - ``./rz-id-manager.yml``
-    - ``~/rz-id-manager.yml``
-    - ``/etc/rz-id-manager.yml``
+    - ``./opencast-podcast.yml``
+    - ``~/opencast-podcast.yml``
+    - ``/etc/opencast-podcast.yml``
 
     :return: configuration file name or None
     '''
-    if os.path.isfile('./rz-id-manager.yml'):
-        return './rz-id-manager.yml'
-    expanded_file = os.path.expanduser('~/rz-id-manager.yml')
+    if os.path.isfile('./opencast-podcast.yml'):
+        return './opencast-podcast.yml'
+    expanded_file = os.path.expanduser('~/opencast-podcast.yml')
     if os.path.isfile(expanded_file):
         return expanded_file
-    if os.path.isfile('/etc/rz-id-manager.yml'):
-        return '/etc/rz-id-manager.yml'
+    if os.path.isfile('/etc/opencast-podcast.yml'):
+        return '/etc/opencast-podcast.yml'
 
 
 def update_configuration(filename=None):
