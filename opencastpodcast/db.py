@@ -49,7 +49,19 @@ class Podcast(Base):
     title = Column(String)
     description = Column(String)
     author = Column(String)
-    image = Column(Text)
+    image = Column(String)
+
+
+class Episode(Base):
+    """ORM object for podcast episodes.
+    """
+    __tablename__ = 'episode'
+    episode_id = Column(String, primary_key=True)
+    title = Column(String)
+    description = Column(Text)
+    image = Column(String)
+    duration = Column(Integer)
+    media = Column(String)
 
 
 def with_session(f):

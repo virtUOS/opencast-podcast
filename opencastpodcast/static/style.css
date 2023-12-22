@@ -45,3 +45,14 @@ form {
 hr {
 	margin: 50px;
 }
+
+main.podcasts {
+	display: grid;
+	grid-template-columns: min-content auto;
+	gap: 20px;
+}
+
+main.podcasts img {
+	max-width: 150px;
+	max-height: 150px;
+}

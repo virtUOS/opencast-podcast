@@ -5,22 +5,31 @@ mail:
   to: example@uni-osnabrueck.de
   server: example.uni-osnabrueck.de
 
-# User interface configuration.
-ui:
-  directories:
-    # Path to a folder containing user interface templates,
-    # overriding *all* built-in templates.
-    # If you use this, make sure to provide all necessary templates.
-    # Missing templates can cause unrecoverable errors during the login process.
-    # Example:
-    #   template: /path/to/template/dir
-    template: null
+directories:
+  # Path to a folder in which to put temporary files.
+  # This is being used for podcast episode uploads.
+  # Default: upload_tmp
+  #upload: upload_tmp
 
-    # Path to a folder containing static files used in the user interface.
-    # This overwrites all built-in files.
-    # Example:
-    #   static: /path/to/static/dir
-    static: null
+  # Path to a folder in which to put uploaded files.
+  # Default: uploads
+  #upload: uploads
+
+  # Path to a folder containing user interface templates,
+  # overriding *all* built-in templates.
+  # If you use this, make sure to provide all necessary templates.
+  # Missing templates can cause unrecoverable errors during the login process.
+  # Example:
+  #   template: /path/to/template/dir
+  # Default: null (use internal templates)
+  #template: null
+
+  # Path to a folder containing static files used in the user interface.
+  # This overwrites all built-in files.
+  # Example:
+  #   static: /path/to/static/dir
+  # Default: null (use internal files)
+  #static: null
 
 # Level of details used for logging
 # Valid options are:
