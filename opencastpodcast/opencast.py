@@ -61,7 +61,7 @@ def create_episode(episode):
     fields.append(('identifier', (None, episode.episode_id)))
     fields.append(('title', (None, episode.title)))
     fields.append(('publisher', (None, episode.author)))
-    fields.append(('isPartOf=', (None, episode.podcast_id)))
+    fields.append(('isPartOf', (None, episode.podcast_id)))
     fields.append(('flavor', (None, 'presenter/source')))
     fields.append(('BODY', open(image, 'rb')))
     fields.append(('flavor', (None, 'presenter/source')))
