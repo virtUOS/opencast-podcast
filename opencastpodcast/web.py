@@ -18,6 +18,7 @@ import glob
 import logging
 import os
 import re
+import uuid
 import yaml
 
 from dateutil.parser import parse
@@ -26,8 +27,9 @@ from flask import Flask, request, redirect, render_template, session, \
 from functools import wraps
 
 from opencastpodcast.config import config
-from opencastpodcast.db import with_session, Podcast
+from opencastpodcast.db import with_session, Podcast, Episode
 from opencastpodcast.utils import random_string, organizational_unit
+from opencastpodcast.opencast import create_series, create_episode
 
 
 # Logger
@@ -97,6 +99,9 @@ def podcast_add(db):
     podcast.description = request.form.get('description')
     podcast.author = request.form.get('author')
     podcast.image = filename
+
+    create_series(podcast)
+
     db.add(podcast)
     db.commit()
 
@@ -105,15 +110,64 @@ def podcast_add(db):
 
 @app.route('/p/<identifier>')
 @with_session
-def podcast(db):
+def podcast(db, identifier):
     podcast = db.query(Podcast).where(Podcast.podcast_id == identifier).one()
-    return render_template('podcast.html', podcasts=podcasts)
+    print(podcast.episodes)
+    return render_template('podcast.html', podcast=podcast)
 
-@app.route('/img/<identifier>')
+@app.route('/p/<identifier>', methods=['POST'])
 @with_session
-def send_report(db, identifier):
+def episode_add(db, identifier):
     podcast = db.query(Podcast).where(Podcast.podcast_id == identifier).one()
+    episode = Episode()
+    episode.episode_id = str(uuid.uuid4())
+    episode.podcast_id = identifier
+
+    # check if the post request has a valid media file
+    if 'media' not in request.files or not request.files['media'].filename:
+        return 'Media file is missing', 400
+    media = request.files['media']
+    ext = media.filename.lower().split('.')[-1]
+    if ext not in ('mp3', 'm4a'):
+        return 'Invalid media type', 400
+    filename = f'{identifier}-{episode.episode_id}.{ext}'
+    upload_tmp_dir = config('directories', 'upload_tmp') or 'upload_tmp'
+    media.save(os.path.join(upload_tmp_dir, filename))
+    episode.media = filename
+
+    # check if the post request has a valid image
+    if 'image' in request.files and request.files['image'].filename:
+        image = request.files['image']
+        ext = image.filename.lower().split('.')[-1]
+        if ext not in ('jpg', 'png', 'jpeg'):
+            return 'Invalid image type', 400
+        filename = f'{identifier}.{ext}'
+        upload_dir = config('directories', 'upload') or 'upload'
+        image.save(os.path.join(upload_dir, filename))
+        episode.image = filename
+
+    else:
+        # use the podcast's cover image if none was provided
+        episode.image = podcast.image
+
+    episode.title = request.form.get('title')
+    episode.description = request.form.get('description')
+    episode.author = request.form.get('author')
+
+    create_episode(episode)
+
+    db.add(episode)
+    db.commit()
+
+    # Back to home
+    return redirect(url_for('podcast', identifier=identifier))
+
+@app.route('/i/<image>')
+@with_session
+def send_report(db, image):
     upload_dir = os.path.abspath(config('directories', 'upload') or 'upload')
-    return send_from_directory(upload_dir, podcast.image)
+    if '/' in image:
+        return 'No such image', 404
+    return send_from_directory(upload_dir, image)
 
 init()

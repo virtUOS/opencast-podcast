@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Add new episode</h2>
+<form action='/p/{{ podcast.podcast_id }}' method=post enctype=multipart/form-data>
+	<label for=title>Title</label>
+	<input type=text name=title required />
+	<label for=author>Author</label>
+	<input type=text name=author value='{{ podcast.author }}' required />
+	<label for=description>Description</label>
+	<textarea name=description rows=5 required ></textarea>
+	<label for=image>Cover</label>
+	<input type=file name=image accept='image/jpg,image/png,.png,.jpg' />
+	<label for=media>Media</label>
+	<input type=file name=media accept='audio/mpeg,audio/m4a,.mp3,.m4a'required />
+
+	<span></span>
+	<button type=submit>Add episode</button>
+</form>
+
+<hr />
+
+<main class=podcasts>
+	{%- for episode in podcast.episodes %}
+	<img src=/i/{{ episode.image }} />
+	<div>
+		<h2>{{ episode.title }}</h2>
+		<div>{{ episode.author }}</div>
+		<p />
+		<div>{{ episode.description }}</div>
+	</div>
+	{% endfor %}
+</main>
+{% endblock %}

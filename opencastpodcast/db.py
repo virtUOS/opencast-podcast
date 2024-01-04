@@ -20,9 +20,9 @@ import enum
 from functools import wraps
 from datetime import datetime
 from sqlalchemy import create_engine, func, Column, Date, DateTime, String, \
-        Enum, Integer, Text
+        Enum, Integer, Text, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship, sessionmaker
 
 from opencastpodcast.config import config
 
@@ -31,8 +31,7 @@ logger = logging.getLogger(__name__)
 
 # Database uri as described in
 # https://docs.sqlalchemy.org/en/13/core/engines.html#database-urls
-# Retrieved as environment variable.
-database = config('database') or 'sqlite:///rz-id-manager.db'
+database = config('database') or 'sqlite:///opencast-podcast.db'
 
 # Global session variable. Set on initialization.
 __session__ = None
@@ -51,12 +50,16 @@ class Podcast(Base):
     author = Column(String)
     image = Column(String)
 
+    # Episode relationship
+    episodes = relationship('Episode')
+
 
 class Episode(Base):
     """ORM object for podcast episodes.
     """
     __tablename__ = 'episode'
     episode_id = Column(String, primary_key=True)
+    podcast_id = Column(String, ForeignKey('podcast.podcast_id'))
     title = Column(String)
     description = Column(Text)
     image = Column(String)

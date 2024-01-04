@@ -5,6 +5,16 @@ mail:
   to: example@uni-osnabrueck.de
   server: example.uni-osnabrueck.de
 
+# Database uri as described in
+# https://docs.sqlalchemy.org/en/13/core/engines.html#database-urls
+database: sqlite:///opencast-podcast.db
+
+opencast:
+  server: https://develop.opencast.org
+  user: admin
+  password: opencast
+  workflow: podcast
+
 directories:
   # Path to a folder in which to put temporary files.
   # This is being used for podcast episode uploads.
