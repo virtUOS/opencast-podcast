@@ -17,7 +17,6 @@
 import requests
 import logging
 import os
-import yaml
 
 from requests.auth import HTTPBasicAuth
 

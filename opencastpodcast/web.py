@@ -21,14 +21,13 @@ import re
 import uuid
 import yaml
 
-from dateutil.parser import parse
 from flask import Flask, request, redirect, render_template, session, \
-                  jsonify, url_for, send_from_directory
+                  url_for, send_from_directory
 from functools import wraps
 
 from opencastpodcast.config import config
 from opencastpodcast.db import with_session, Podcast, Episode
-from opencastpodcast.utils import random_string, organizational_unit
+from opencastpodcast.utils import random_string
 from opencastpodcast.opencast import create_series, create_episode
 
 
@@ -74,6 +73,7 @@ def home(db):
     podcasts = db.query(Podcast)
     return render_template('index.html', podcasts=podcasts)
 
+
 @app.route('/', methods=['POST'])
 @with_session
 def podcast_add(db):
@@ -108,12 +108,14 @@ def podcast_add(db):
     # Back to home
     return redirect(url_for('home'))
 
+
 @app.route('/p/<identifier>')
 @with_session
 def podcast(db, identifier):
     podcast = db.query(Podcast).where(Podcast.podcast_id == identifier).one()
     print(podcast.episodes)
     return render_template('podcast.html', podcast=podcast)
+
 
 @app.route('/p/<identifier>', methods=['POST'])
 @with_session
@@ -162,6 +164,7 @@ def episode_add(db, identifier):
     # Back to home
     return redirect(url_for('podcast', identifier=identifier))
 
+
 @app.route('/i/<image>')
 @with_session
 def send_report(db, image):
@@ -169,5 +172,6 @@ def send_report(db, image):
     if '/' in image:
         return 'No such image', 404
     return send_from_directory(upload_dir, image)
+
 
 init()
