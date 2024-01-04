@@ -143,7 +143,7 @@ def episode_add(db, identifier):
         ext = image.filename.lower().split('.')[-1]
         if ext not in ('jpg', 'png', 'jpeg'):
             return 'Invalid image type', 400
-        filename = f'{identifier}.{ext}'
+        filename = f'{identifier}-{episode.episode_id}.{ext}'
         upload_dir = config('directories', 'upload') or 'upload'
         image.save(os.path.join(upload_dir, filename))
         episode.image = filename
