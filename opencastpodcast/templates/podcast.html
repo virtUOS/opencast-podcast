@@ -28,6 +28,11 @@
 		<div>{{ episode.author }}</div>
 		<p />
 		<div>{{ episode.description }}</div>
+		{% if episode.media_url %}
+		<audio controls>
+			<source src={{ episode.media_url }} type="audio/mpeg">
+		</audio>
+		{% endif %}
 	</div>
 	{% endfor %}
 </main>

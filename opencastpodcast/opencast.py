@@ -30,17 +30,33 @@ acl = '{"acl": {"ace": [' \
 logger = logging.getLogger(__name__)
 
 
-def post(path, **kwargs):
-    server = config('opencast', 'server')
+def ensure_list(elem):
+    if type(elem) is list:
+        return elem
+    return [elem]
+
+
+def auth():
     user = config('opencast', 'user')
     password = config('opencast', 'password')
-    auth = HTTPBasicAuth(user, password)
+    return HTTPBasicAuth(user, password)
 
-    r = requests.post(f'{server}{path}', auth=auth, **kwargs)
+
+def post(path, **kwargs):
+    server = config('opencast', 'server')
+    r = requests.post(f'{server}{path}', auth=auth(), **kwargs)
     r.raise_for_status()
 
 
+def get(path, **kwargs):
+    server = config('opencast', 'server')
+    r = requests.get(f'{server}{path}', auth=auth(), **kwargs)
+    r.raise_for_status()
+    return r.json()
+
+
 def create_series(podcast):
+    logger.info(f'Creating series {podcast.podcast_id}')
     series = {
             'identifier': podcast.podcast_id,
             'publisher': podcast.author,
@@ -50,6 +66,7 @@ def create_series(podcast):
 
 
 def create_episode(episode):
+    logger.info(f'Ingesting episode {episode.episode_id}')
     workflow = config('opencast', 'workflow')
     upload_dir = os.path.abspath(config('directories', 'upload') or 'upload')
     image = os.path.join(upload_dir, episode.image)
@@ -69,3 +86,16 @@ def create_episode(episode):
 
     # Ingest media
     post(f'/ingest/addMediaPackage/{workflow}', files=fields)
+
+
+def get_episode_url(episode_id):
+    episode = get('/search/episode.json', params={'id': episode_id})
+    episode = episode.get('search-results').get('result')
+    if not episode:
+        return None
+    mediapackage = episode.get('mediapackage')
+    tracks = ensure_list(mediapackage.get('media').get('track'))
+    for track in tracks:
+        if track.get('type') == 'presenter/audio':
+            return track.get('url')
+

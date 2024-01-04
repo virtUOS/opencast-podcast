@@ -73,3 +73,8 @@ main.podcasts img {
 	max-width: 150px;
 	max-height: 150px;
 }
+
+audio {
+	width: 100%;
+	margin-top: 10px;
+}

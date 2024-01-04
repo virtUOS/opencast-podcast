@@ -65,6 +65,7 @@ class Episode(Base):
     image = Column(String)
     duration = Column(Integer)
     media = Column(String)
+    media_url = Column(String)
 
 
 def with_session(f):
