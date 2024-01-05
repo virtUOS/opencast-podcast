@@ -113,7 +113,6 @@ def podcast_add(db):
 @with_session
 def podcast(db, identifier):
     podcast = db.query(Podcast).where(Podcast.podcast_id == identifier).one()
-    print(podcast.episodes)
     return render_template('podcast.html', podcast=podcast)
 
 
@@ -134,7 +133,8 @@ def episode_add(db, identifier):
         return 'Invalid media type', 400
     filename = f'{identifier}-{episode.episode_id}.{ext}'
     upload_tmp_dir = config('directories', 'upload_tmp') or 'upload_tmp'
-    media.save(os.path.join(upload_tmp_dir, filename))
+    media_tmp_path = os.path.join(upload_tmp_dir, filename)
+    media.save(media_tmp_path)
     episode.media = filename
 
     # check if the post request has a valid image
@@ -157,11 +157,13 @@ def episode_add(db, identifier):
     episode.author = request.form.get('author')
 
     create_episode(episode)
+    logger.info('Deleting temporary file %s', episode.media)
+    os.remove(media_tmp_path)
 
     db.add(episode)
     db.commit()
 
-    # Back to home
+    # Back to podcast page
     return redirect(url_for('podcast', identifier=identifier))
 
 
