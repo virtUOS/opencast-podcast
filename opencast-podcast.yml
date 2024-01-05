@@ -9,6 +9,9 @@ mail:
 # https://docs.sqlalchemy.org/en/13/core/engines.html#database-urls
 database: sqlite:///opencast-podcast.db
 
+server:
+  base_url: https://podcast.uni-osnabrueck.de
+
 opencast:
   server: https://develop.opencast.org
   user: admin
@@ -16,14 +19,17 @@ opencast:
   workflow: podcast
 
 directories:
-  # Path to a folder in which to put temporary files.
-  # This is being used for podcast episode uploads.
-  # Default: upload_tmp
-  #upload: upload_tmp
-
   # Path to a folder in which to put uploaded files.
   # Default: uploads
   #upload: uploads
+
+  # Path to a folder used for temporary files (like media uploads).
+  # Default: upload_tmp
+  #upload_tmp: upload_tmp
+
+  # Path to a folder in which to put generated RSS feeds.
+  # Default: feeds
+  #feeds: feeds
 
   # Path to a folder containing user interface templates,
   # overriding *all* built-in templates.

@@ -4,3 +4,4 @@ requests
 Flask
 ldap3
 sqlalchemy
+feedgen
