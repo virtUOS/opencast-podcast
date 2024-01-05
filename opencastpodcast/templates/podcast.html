@@ -32,6 +32,8 @@
 		<audio controls>
 			<source src={{ episode.media_url }} type="audio/mpeg">
 		</audio>
+		{% else %}
+		<p>Publication in progress…</p>
 		{% endif %}
 	</div>
 	{% endfor %}

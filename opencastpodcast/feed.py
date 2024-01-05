@@ -53,7 +53,8 @@ def update_feed(podcast_id):
         fe.id(f'{base_url}/p/{podcast_id}/{episode.episode_id}')
         fe.title(episode.title)
         fe.description(episode.description)
-        fe.enclosure(episode.media_url, 0, 'audio/mpeg')
+        fe.podcast.itunes_duration(episode.media_duration)
+        fe.enclosure(episode.media_url, episode.media_size, 'audio/mpeg')
 
     db.close()
 

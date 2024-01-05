@@ -97,5 +97,7 @@ def get_episode_url(episode_id):
     tracks = ensure_list(mediapackage.get('media').get('track'))
     for track in tracks:
         if track.get('type') == 'presenter/audio':
-            return track.get('url')
+            return {'url': track.get('url'),
+                    'duration': track.get('duration'),
+                    'size': track.get('size')}
 

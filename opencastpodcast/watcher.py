@@ -30,11 +30,13 @@ def run():
         session = get_session()
         episodes = session.query(Episode).where(Episode.media_url == None).all()
         for episode in episodes:
-            logger.info(f'Episode {episode.episode_id}: Checking publication')
-            url = get_episode_url(episode.episode_id)
-            if url:
-                logger.info(f'Found {url}')
-                episode.media_url = url
+            logger.info('Episode %s: Checking publication', episode.episode_id)
+            track = get_episode_url(episode.episode_id)
+            if track:
+                logger.info('Found %s', track['url'])
+                episode.media_url = track.get('url')
+                episode.media_size = track.get('size')
+                episode.media_duration = track.get('duration')
                 session.commit()
         session.close()
         time.sleep(10)

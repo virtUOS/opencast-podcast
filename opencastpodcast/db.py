@@ -66,6 +66,8 @@ class Episode(Base):
     duration = Column(Integer)
     media = Column(String)
     media_url = Column(String)
+    media_size = Column(Integer)
+    media_duration = Column(Integer)
 
 
 def with_session(f):
