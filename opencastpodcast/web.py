@@ -29,6 +29,7 @@ from opencastpodcast.config import config
 from opencastpodcast.db import with_session, Podcast, Episode
 from opencastpodcast.utils import random_string
 from opencastpodcast.opencast import create_series, create_episode
+from opencastpodcast.itunes import itunes_categories
 
 
 # Logger
@@ -71,7 +72,9 @@ def init():
 @with_session
 def home(db):
     podcasts = db.query(Podcast)
-    return render_template('index.html', podcasts=podcasts)
+    return render_template('index.html',
+                           podcasts=podcasts,
+                           itunes_categories=itunes_categories)
 
 
 @app.route('/', methods=['POST'])
