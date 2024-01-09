@@ -15,6 +15,27 @@
 	<input type=text name=author required />
 	<label for=description>Description</label>
 	<textarea name=description rows=5 required ></textarea>
+	<label for=category>Category</label>
+	<select name=category required>
+		<option selected></option>
+		{%- for category in itunes_categories %}
+		<option value="{{ category }}">{{ category }}</option>
+		{% endfor %}
+	</select>
+	<label for=explicit>Explicit</label>
+	<select name=explicit required>
+		<option selected></option>
+		{%- for explicit in ['yes', 'no', 'clean'] %}
+		<option value="{{ explicit }}">{{ explicit }}</option>
+		{% endfor %}
+	</select>
+	<label for=language>Language</label>
+	<select name=language required>
+		<option selected></option>
+		{%- for language in ['de', 'en', 'es', 'fr'] %}
+		<option value="{{ language }}">{{ language }}</option>
+		{% endfor %}
+	</select>
 	<label for=image>Image</label>
 	<input type=file name=image accept='image/jpg,image/png,.png,.jpg' required />
 

@@ -20,12 +20,12 @@ import os
 from feedgen.feed import FeedGenerator
 
 from opencastpodcast.config import config
-from opencastpodcast.db import get_session, Podcast, Episode
-from opencastpodcast.opencast import get_episode_url
+from opencastpodcast.db import get_session, Podcast
 
 
 # Logger
 logger = logging.getLogger(__name__)
+
 
 def update_feed(podcast_id):
     logger.info('Generating feed for %s', podcast_id)
@@ -38,13 +38,15 @@ def update_feed(podcast_id):
     fg.id(f'{base_url}/p/{podcast_id}')
     fg.title(podcast.title)
     fg.description(podcast.description)
-    #fg.author( {'name':'John Doe','email':'john@example.de'} )
     fg.author(name=podcast.author)
-    fg.link(href=base_url, rel='alternate' )
+    fg.link(href=base_url, rel='alternate')
     fg.logo(f'{base_url}/i/{podcast_id}')
-    fg.link(href=f'{base_url}/rss/{podcast_id}.xml', rel='self' )
-    fg.language('en')
-    fg.podcast.itunes_category('Technology', 'Podcasting')
+    fg.link(href=f'{base_url}/rss/{podcast_id}.xml', rel='self')
+    fg.language(podcast.language)
+    fg.podcast.itunes_explicit(podcast.explicit)
+    # Split into category and subcategory
+    category = podcast.category.split(', ')
+    fg.podcast.itunes_category(*category)
 
     for episode in podcast.episodes:
         if not episode.media_url:
@@ -58,7 +60,6 @@ def update_feed(podcast_id):
 
     db.close()
 
-    print(fg.rss_str(pretty=True).decode())
     feed_dir = config('directories', 'feeds') or 'feeds'
     feed_path = os.path.join(feed_dir, f'{podcast_id}.xml')
     logger.info('Writing feed to %s', feed_path)

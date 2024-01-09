@@ -48,6 +48,9 @@ class Podcast(Base):
     title = Column(String)
     description = Column(String)
     author = Column(String)
+    language = Column(String)
+    category = Column(String)
+    explicit = Column(String)
     image = Column(String)
 
     # Episode relationship
