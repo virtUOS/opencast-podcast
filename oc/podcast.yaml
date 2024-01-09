@@ -1,0 +1,89 @@
+---
+id: podcast
+title: Publish Podcast
+tags:
+  - upload
+displayOrder: 101
+operations:
+  - id: series
+    fail-on-error: true
+    exception-handler-workflow: partial-error
+    description: "Applying access control entries from series"
+    configurations:
+      - apply-acl: true
+
+  - id: inspect
+    fail-on-error: true
+    exception-handler-workflow: "partial-error"
+    description: "Inspecting audio and video streams"
+    configurations:
+      - overwrite: false
+      - accept-no-media: false
+
+  - id: prepare-av
+    description: Include cover art
+    fail-on-error: true
+    exception-handler-workflow: partial-error
+    configurations:
+      - source-flavor: presenter/source
+      - target-flavor: presenter/audio
+      - target-tags: engage-download
+      - rewrite: false
+      - mux-encoding-profile: podcast-art
+
+  - id: prepare-av
+    description: Create video podcast
+    fail-on-error: true
+    exception-handler-workflow: partial-error
+    configurations:
+      - source-flavor: presenter/source
+      - target-flavor: presenter/delivery
+      - target-tags: engage-download
+      - rewrite: false
+      - mux-encoding-profile: podcast-video
+
+  - id: image
+    fail-on-error: true
+    exception-handler-workflow: partial-error
+    description: Creating Engage search result thumbnails
+    configurations:
+      - source-flavor: presenter/delivery
+      - target-flavor: "*/search+preview"
+      - target-tags: engage-download
+      - encoding-profile: search-cover.http
+      - time: 1
+
+  - id: image
+    fail-on-error: true
+    exception-handler-workflow: partial-error
+    description: Creating Engage player preview image
+    configurations:
+      - source-flavor: presenter/delivery
+      - target-flavor: "*/player+preview"
+      - target-tags: engage-download
+      - encoding-profile: player-preview.http
+      - time: 1
+
+  - id: publish-engage
+    max-attempts: 2
+    fail-on-error: true
+    exception-handler-workflow: partial-error
+    description: Publishing to Engage
+    configurations:
+      - download-source-flavors: "dublincore/*,security/*"
+      - download-source-tags: engage-download
+      - check-availability: false
+
+  - id: snapshot
+    fail-on-error: true
+    exception-handler-workflow: partial-error
+    description: Archiving
+    configurations:
+      - source-flavors: "*/source,dublincore/*,security/*"
+
+  - id: cleanup
+    fail-on-error: false
+    description: Cleaning up
+    configurations:
+      - delete-external: true
+      - preserve-flavors: "security/*"
