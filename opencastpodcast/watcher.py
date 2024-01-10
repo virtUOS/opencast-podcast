@@ -20,6 +20,7 @@ import time
 from opencastpodcast.config import config
 from opencastpodcast.db import get_session, Podcast, Episode
 from opencastpodcast.opencast import get_episode_url
+from opencastpodcast.feed import update_feed
 
 
 # Logger
@@ -37,6 +38,7 @@ def run():
                 episode.media_url = track.get('url')
                 episode.media_size = track.get('size')
                 episode.media_duration = track.get('duration')
+                update_feed(episode.episode_id)
                 session.commit()
         session.close()
         time.sleep(10)
