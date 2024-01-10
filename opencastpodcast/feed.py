@@ -55,6 +55,7 @@ def update_feed(podcast_id):
         fe.id(f'{base_url}/p/{podcast_id}/{episode.episode_id}')
         fe.title(episode.title)
         fe.description(episode.description)
+        fe.podcast.itunes_image(f'{base_url}/i/{episode.image}')
         fe.podcast.itunes_duration(episode.media_duration)
         fe.enclosure(episode.media_url, episode.media_size, 'audio/mpeg')
 
