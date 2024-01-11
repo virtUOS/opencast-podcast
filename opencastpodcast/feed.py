@@ -40,8 +40,8 @@ def update_feed(podcast_id):
     fg.description(podcast.description)
     fg.author(name=podcast.author)
     fg.link(href=base_url, rel='alternate')
-    fg.logo(f'{base_url}/i/{podcast_id}')
-    fg.link(href=f'{base_url}/rss/{podcast_id}.xml', rel='self')
+    fg.logo(f'{base_url}/i/{podcast.image}')
+    fg.link(href=f'{base_url}/r/{podcast_id}.xml', rel='self')
     fg.language(podcast.language)
     fg.podcast.itunes_explicit(podcast.explicit)
     # Split into category and subcategory
