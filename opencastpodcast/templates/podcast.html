@@ -20,6 +20,13 @@
 
 <hr />
 
+Feed URL:
+<pre>
+{{ base_url }}/r/{{ podcast.podcast_id }}.xml
+</pre>
+
+<hr />
+
 <main class=podcasts>
 	{%- for episode in podcast.episodes %}
 	<img src=/i/{{ episode.image }} />

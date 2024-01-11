@@ -122,8 +122,9 @@ def podcast_add(db):
 @app.route('/p/<identifier>')
 @with_session
 def podcast(db, identifier):
+    base_url = config('server', 'base_url').rstrip('/')
     podcast = db.query(Podcast).where(Podcast.podcast_id == identifier).one()
-    return render_template('podcast.html', podcast=podcast)
+    return render_template('podcast.html', base_url=base_url, podcast=podcast)
 
 
 @app.route('/p/<identifier>', methods=['POST'])
@@ -179,11 +180,21 @@ def episode_add(db, identifier):
 
 @app.route('/i/<image>')
 @with_session
-def send_report(db, image):
+def image(db, image):
     upload_dir = os.path.abspath(config('directories', 'upload') or 'upload')
     if '/' in image:
         return 'No such image', 404
     return send_from_directory(upload_dir, image)
+
+
+@app.route('/r/<identifier>.xml')
+@with_session
+def rss(db, identifier):
+    feed_dir = os.path.abspath(config('directories', 'feeds') or 'feeds')
+    if '/' in identifier:
+        return 'No such feed', 404
+    logger.debug('Delivering feed for %s', identifier)
+    return send_from_directory(feed_dir, f'{identifier}.xml')
 
 
 init()
