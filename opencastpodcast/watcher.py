@@ -26,19 +26,27 @@ from opencastpodcast.feed import update_feed
 # Logger
 logger = logging.getLogger(__name__)
 
-def run():
+def check():
+    session = get_session()
+    episodes = session.query(Episode).where(Episode.media_url == None).all()
+    for episode in episodes:
+        logger.info('Episode %s: Checking publication', episode.episode_id)
+        track = get_episode_url(episode.episode_id)
+        if track:
+            logger.info('Found %s', track['url'])
+            episode.media_url = track.get('url')
+            episode.media_size = track.get('size')
+            episode.media_duration = track.get('duration')
+            session.commit()
+            update_feed(episode.podcast_id)
+    session.close()
+
+
+def run_watcher():
     while True:
-        session = get_session()
-        episodes = session.query(Episode).where(Episode.media_url == None).all()
-        for episode in episodes:
-            logger.info('Episode %s: Checking publication', episode.episode_id)
-            track = get_episode_url(episode.episode_id)
-            if track:
-                logger.info('Found %s', track['url'])
-                episode.media_url = track.get('url')
-                episode.media_size = track.get('size')
-                episode.media_duration = track.get('duration')
-                session.commit()
-                update_feed(episode.podcast_id)
-        session.close()
+        check()
         time.sleep(10)
+
+
+if __name__ == '__main__':
+    check()

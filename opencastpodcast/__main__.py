@@ -19,6 +19,7 @@ import argparse
 from multiprocessing import Process
 
 from opencastpodcast.config import update_configuration
+from opencastpodcast.watcher import run_watcher
 
 
 if __name__ == '__main__':
@@ -45,10 +46,9 @@ if __name__ == '__main__':
     # Since `app` will use the configuration,
     # load it only after we updated the configuration location
     from opencastpodcast.web import app
-    from opencastpodcast.watcher import run
 
     # Run watcher
-    watcher = Process(target=run)
+    watcher = Process(target=run_watcher)
     watcher.start()
 
     # Run web application
