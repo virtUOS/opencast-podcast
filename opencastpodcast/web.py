@@ -21,6 +21,7 @@ import re
 import uuid
 import yaml
 
+from datetime import datetime
 from flask import Flask, request, redirect, render_template, session, \
                   url_for, send_from_directory
 from functools import wraps
@@ -166,6 +167,7 @@ def episode_add(db, identifier):
     episode.title = request.form.get('title')
     episode.description = request.form.get('description')
     episode.author = request.form.get('author')
+    episode.published = datetime.now()
 
     create_episode(episode)
     logger.info('Deleting temporary file %s', episode.media)
