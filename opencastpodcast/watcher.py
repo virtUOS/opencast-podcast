@@ -38,7 +38,7 @@ def run():
                 episode.media_url = track.get('url')
                 episode.media_size = track.get('size')
                 episode.media_duration = track.get('duration')
-                update_feed(episode.episode_id)
                 session.commit()
+                update_feed(episode.podcast_id)
         session.close()
         time.sleep(10)

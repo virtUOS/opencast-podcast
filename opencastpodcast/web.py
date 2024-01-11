@@ -30,6 +30,7 @@ from opencastpodcast.db import with_session, Podcast, Episode
 from opencastpodcast.utils import random_string
 from opencastpodcast.opencast import create_series, create_episode
 from opencastpodcast.itunes import itunes_categories
+from opencastpodcast.feed import update_feed
 
 
 # Logger
@@ -110,6 +111,9 @@ def podcast_add(db):
 
     db.add(podcast)
     db.commit()
+
+    # Create initial RSS feed
+    update_feed(identifier)
 
     # Back to home
     return redirect(url_for('home'))
